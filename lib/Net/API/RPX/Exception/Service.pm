@@ -26,16 +26,16 @@ my $rpx_errors = {
 
 has 'data'          => ( isa => 'Any', is => 'ro', required => 1 );
 has 'status'        => ( isa => 'Any', is => 'ro', required => 1 );
-has 'error'         => ( isa => 'Any', is => 'ro', required => 1 );
-has 'error_code'    => ( isa => 'Any', is => 'ro', required => 1 );
-has 'error_message' => ( isa => 'Any', is => 'ro', required => 1 );
+has 'rpx_error'         => ( isa => 'Any', is => 'ro', required => 1 );
+has 'rpx_error_code'    => ( isa => 'Any', is => 'ro', required => 1 );
+has 'rpx_error_message' => ( isa => 'Any', is => 'ro', required => 1 );
 has
-  'error_code_description' => ( isa => 'Any', is => 'ro', required => 1, lazy => 1, ),
-  , builder => '_build_error_code_description';
+  'rpx_error_code_description' => ( isa => 'Any', is => 'ro', required => 1, lazy => 1, ),
+  , builder => '_build_rpx_error_code_description';
 
-sub _build_error_code_description {
+sub _build_rpx_error_code_description {
   my ($self) = shift;
-  return $rpx_errors->{ $self->error_code };
+  return $rpx_errors->{ $self->rpx_error_code };
 }
 __PACKAGE__->meta->make_immutable( inline_constructor => 0 );
 1;
