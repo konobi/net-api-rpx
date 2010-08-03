@@ -17,5 +17,6 @@ extends 'Net::API::RPX::Exception';
 has 'ua_result'   => ( isa => "Ref", is => 'ro', required => 1 );
 has 'status_line' => ( isa => "Str", is => 'ro', required => 1 );
 
+__PACKAGE__->meta->make_immutable;
 1;
 

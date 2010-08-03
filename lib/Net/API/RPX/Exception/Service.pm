@@ -24,8 +24,8 @@ my $rpx_errors = {
   5  => 'Mapping exists',
 };
 
-has 'data'          => ( isa => 'Any', is => 'ro', required => 1 );
-has 'status'        => ( isa => 'Any', is => 'ro', required => 1 );
+has 'data'              => ( isa => 'Any', is => 'ro', required => 1 );
+has 'status'            => ( isa => 'Any', is => 'ro', required => 1 );
 has 'rpx_error'         => ( isa => 'Any', is => 'ro', required => 1 );
 has 'rpx_error_code'    => ( isa => 'Any', is => 'ro', required => 1 );
 has 'rpx_error_message' => ( isa => 'Any', is => 'ro', required => 1 );

@@ -27,7 +27,8 @@ sub _signature_string {
 
 sub _explanation {
   my ($self) = @_;
-  return sprintf q{Method %s on package %s expects the parameter "%s"} . qq{\n\n} . qq{\tUsage:\t%s\n}, $self->method_name, $self->package,
+  return sprintf q{Method %s on package %s expects the parameter "%s"} . qq{\n\n} . qq{\tUsage:\t%s\n}, $self->method_name,
+    $self->package,
     $self->required_parameter, $self->_signature_string;
 }
 
@@ -44,6 +45,6 @@ sub full_message {
   my $msg  = $self->message . qq{\n} . $self->_explanation;
   return $msg;
 }
-__PACKAGE__->meta->make_immutable( inline_constructor => 0 );
+__PACKAGE__->meta->make_immutable();
 1;
 
