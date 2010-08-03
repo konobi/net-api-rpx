@@ -11,6 +11,11 @@ Net::API::RPX::Exception - A hackish baseclass fusing L<Moose> with L<Exception:
 =cut
 
 
+=head1 DEBUGGING
+
+For complete backtraces in C<< die() >>, set C<< $ENV{NET_API_RPX_STACKTRACE} = 1 >>
+
+=cut
 use Moose;
 extends qw( Exception::Class::Base Moose::Object );
 
@@ -27,10 +32,12 @@ looper: {
     }
   }
   my $obj = $class->$orig(@args);
-  return $class->meta->new_object(
+  my $mob = $class->meta->new_object(
     __INSTANCE__ => $obj,
     @mooseargs,
   );
+  $mob->show_trace(1) if exists $ENV{NET_API_RPX_STACKTRACE} and $ENV{NET_API_RPX_STACKTRACE};
+  return $mob;
 };
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 

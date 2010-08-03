@@ -106,7 +106,7 @@ sub auth_info {
   Net::API::RPX::Exception::Usage->throw(
     message            => "Token is required",
     required_parameter => 'token',
-    method_name        => 'auth_info',
+    method_name        => '->auth_info',
     package            => __PACKAGE__,
     signature          => '{ token => $authtoken }',
   ) if !exists $opts->{token};
@@ -128,7 +128,7 @@ sub map {
   Net::API::RPX::Exception::Usage->throw(
     message => "Identifier is required",
     required_parameter => 'identifier',
-    method_name => 'map',
+    method_name => '->map',
     package => __PACKAGE__,
     signature  => '{ identifier => \'some.open.id\', primary_key => 12 }',
   ) if !exists $opts->{identifier};
@@ -136,7 +136,7 @@ sub map {
    Net::API::RPX::Exception::Usage->throw(
     message => "Primary Key is required",
     required_parameter => 'primary_key',
-    method_name => 'map',
+    method_name => '->map',
     package => __PACKAGE__,
     signature  => '{ identifier => \'some.open.id\', primary_key => 12 }',
   ) if !exists $opts->{primary_key};
@@ -160,7 +160,7 @@ sub unmap {
   Net::API::RPX::Exception::Usage->throw(
     message => "Identifier is required",
     required_parameter => 'identifier',
-    method_name => 'unmap',
+    method_name => '->unmap',
     package => __PACKAGE__,
     signature  => '{ identifier => \'some.open.id\', primary_key => 12 }',
   ) if !exists $opts->{identifier};
@@ -168,7 +168,7 @@ sub unmap {
    Net::API::RPX::Exception::Usage->throw(
     message => "Primary Key is required",
     required_parameter => 'primary_key',
-    method_name => 'unmap',
+    method_name => '->unmap',
     package => __PACKAGE__,
     signature  => '{ identifier => \'some.open.id\', primary_key => 12 }',
   ) if !exists $opts->{primary_key};
@@ -190,8 +190,14 @@ This method returns information about the identifiers associated with a user.
 
 sub mappings {
   my ($self, $opts) = @_;
+  Net::API::RPX::Exception::Usage->throw(
+    message => "Primary Key is required",
+    required_parameter => 'primary_key',
+    method_name => '->mappings',
+    package => __PACKAGE__,
+    signature  => '{ primary_key => 12 }',
+  ) if !exists $opts->{primary_key};
 
-  die "Primary Key is required" if !exists $opts->{primary_key};
   $opts->{primaryKey} = delete $opts->{primary_key};
 
   return $self->_fetch('mappings', $opts);

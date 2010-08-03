@@ -25,7 +25,7 @@ sub _signature_string {
 
 sub _explanation {
   my ($self) = @_;
-  return sprintf q{Method %s on package %s expects the parameter "%s"} . qq{\n} . qq{\t%s\n}, $self->method_name, $self->package,
+  return sprintf q{Method %s on package %s expects the parameter "%s"} . qq{\n\n} . qq{\tUsage:\t%s\n}, $self->method_name, $self->package,
     $self->required_parameter, $self->_signature_string;
 }
 
