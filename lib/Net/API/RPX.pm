@@ -4,7 +4,7 @@ use Moose;
 use LWP::UserAgent;
 use URI;
 use JSON::Any;
-
+use Net::API::RPX::Exception::Usage;
 =head1 NAME
 
 Net::API::RPX - Perl interface to Janrain's RPX service
@@ -67,7 +67,7 @@ dealing with third-party authentication.
 
 See L<http://www.rpxnow.com> for more details.
 
-For specific information regarding the RPX API and method arguments, please refer to 
+For specific information regarding the RPX API and method arguments, please refer to
 L<https://rpxnow.com/docs>.
 
 =head1 ATTRIBUTES
@@ -102,9 +102,15 @@ auth_info to verify the authenticity of the token and gain user details.
 =cut
 
 sub auth_info {
-    my ($self, $opts) = @_;
-    die "Token is required" if !exists $opts->{token};
-    return $self->_fetch('auth_info', $opts);
+  my ( $self, $opts ) = @_;
+  Net::API::RPX::Exception::Usage->throw(
+    message            => "Token is required",
+    required_parameter => 'token',
+    method_name        => 'auth_info',
+    package            => __PACKAGE__,
+    signature          => '{ token => $authtoken }',
+  ) if !exists $opts->{token};
+  return $self->_fetch( 'auth_info', $opts );
 }
 
 =head2 map
@@ -119,9 +125,21 @@ This method allows you to map more than one 'identifier' to a user.
 
 sub map {
   my ($self, $opts) = @_;
+  Net::API::RPX::Exception::Usage->throw(
+    message => "Identifier is required",
+    required_parameter => 'identifier',
+    method_name => 'map',
+    package => __PACKAGE__,
+    signature  => '{ identifier => \'some.open.id\', primary_key => 12 }',
+  ) if !exists $opts->{identifier};
 
-  die "Identifier is required" if !exists $opts->{identifier};
-  die "Primary Key is required" if !exists $opts->{primary_key};
+   Net::API::RPX::Exception::Usage->throw(
+    message => "Primary Key is required",
+    required_parameter => 'primary_key',
+    method_name => 'map',
+    package => __PACKAGE__,
+    signature  => '{ identifier => \'some.open.id\', primary_key => 12 }',
+  ) if !exists $opts->{primary_key};
   $opts->{primaryKey} = delete $opts->{primary_key};
 
   return $self->_fetch('map', $opts);
@@ -139,9 +157,22 @@ This is the inverse of 'map'.
 
 sub unmap {
   my ($self, $opts) = @_;
+  Net::API::RPX::Exception::Usage->throw(
+    message => "Identifier is required",
+    required_parameter => 'identifier',
+    method_name => 'unmap',
+    package => __PACKAGE__,
+    signature  => '{ identifier => \'some.open.id\', primary_key => 12 }',
+  ) if !exists $opts->{identifier};
 
-  die "Identifier is required" if !exists $opts->{identifier};
-  die "Primary Key is required" if !exists $opts->{primary_key};
+   Net::API::RPX::Exception::Usage->throw(
+    message => "Primary Key is required",
+    required_parameter => 'primary_key',
+    method_name => 'unmap',
+    package => __PACKAGE__,
+    signature  => '{ identifier => \'some.open.id\', primary_key => 12 }',
+  ) if !exists $opts->{primary_key};
+
   $opts->{primaryKey} = delete $opts->{primary_key};
 
   return $self->_fetch('unmap', $opts);
