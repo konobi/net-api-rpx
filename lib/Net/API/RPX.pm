@@ -5,6 +5,8 @@ use LWP::UserAgent;
 use URI;
 use JSON::Any;
 use Net::API::RPX::Exception::Usage;
+use Net::API::RPX::Exception::Network;
+
 =head1 NAME
 
 Net::API::RPX - Perl interface to Janrain's RPX service
@@ -224,7 +226,11 @@ sub _fetch {
   });
 
   if(!$res->is_success){
-    die "Could not contact RPX: " . $res->status_line();
+    Net::API::RPX::Exception::Network->throw(
+        message =>  "Could not contact RPX: " . $res->status_line(),
+        ua_result => $res,
+        status_line => $res->status_line,
+    );
   }
 
   my $data = JSON::Any->from_json( $res->content );

@@ -11,6 +11,8 @@ Net::API::RPX::Exception::Usage - For when the interface is used wrongly.
 =cut
 
 use Moose;
+use namespace::autoclean;
+
 extends 'Net::API::RPX::Exception';
 
 has 'required_parameter' => ( isa => 'Str', is => 'rw', required => 1 );
