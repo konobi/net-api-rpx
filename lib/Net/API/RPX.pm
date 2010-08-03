@@ -243,7 +243,7 @@ sub _fetch {
         rpx_error => $data->{'err'},
         rpx_error_code => $data->{err}->{code},
         rpx_error_message => $data->{err}->{msg},
-        message => "RPX returned error of type '". $rpx_errors->{ $err->{code} } . "' with message: " . $err->{msgt},
+        message => "RPX returned error of type '". $rpx_errors->{ $err->{code} } . "' with message: " . $err->{msg},
     );
   }
   delete $data->{'stat'};

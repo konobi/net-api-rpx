@@ -10,36 +10,40 @@ Net::API::RPX::Exception - A hackish baseclass fusing L<Moose> with L<Exception:
 
 =cut
 
-
 =head1 DEBUGGING
 
 For complete backtraces in C<< die() >>, set C<< $ENV{NET_API_RPX_STACKTRACE} = 1 >>
 
 =cut
-use Moose;
-extends qw( Exception::Class::Base Moose::Object );
 
-around new => sub {
-  my ( $orig, $class, @args ) = @_;
-  my @mooseargs;
-looper: {
-    for my $i ( 0 .. $#args / 2 ) {
-      my ($key) = $args[ $i * 2 ];
-      if ( $class->meta->has_attribute($key) ) {
-        push @mooseargs, splice @args, $i * 2, 2, ();
-        redo looper;
-      }
-    }
+use Moose;
+use MooseX::NonMoose;
+extends qw( Exception::Class::Base);
+
+=head1 METHODS
+
+=head2 FOREIGNBUILDARGS
+
+This strips moose meta attributes from the arguement list before passing them
+through to the Exception::Class::Base parent class
+
+=cut
+
+sub FOREIGNBUILDARGS {
+  my ( $class, %args ) = @_;
+  for ( $class->meta->get_attribute_list ) {
+    delete $args{$_};
   }
-  my $obj = $class->$orig(@args);
-  my $mob = $class->meta->new_object(
-    __INSTANCE__ => $obj,
-    @mooseargs,
-  );
-  $mob->show_trace(1) if exists $ENV{NET_API_RPX_STACKTRACE} and $ENV{NET_API_RPX_STACKTRACE};
-  return $mob;
+  return %args;
+}
+
+around show_trace => sub {
+  my ( $orig, $class, @rest ) = @_;
+  return 1 if exists $ENV{NET_API_RPX_STACKTRACE} and $ENV{NET_API_RPX_STACKTRACE};
+  return $class->$orig(@rest);
 };
-__PACKAGE__->meta->make_immutable(inline_constructor => 0);
+
+__PACKAGE__->meta->make_immutable( inline_constructor => 0 );
 
 1;
 

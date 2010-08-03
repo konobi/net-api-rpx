@@ -37,6 +37,6 @@ sub _build_rpx_error_code_description {
   my ($self) = shift;
   return $rpx_errors->{ $self->rpx_error_code };
 }
-__PACKAGE__->meta->make_immutable( inline_constructor => 0 );
+__PACKAGE__->meta->make_immutable();
 1;
 
