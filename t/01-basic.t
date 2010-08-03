@@ -33,9 +33,9 @@ Agent_String: {
 
 Auth_Info: {
     my $rpx = Net::API::RPX->new({ api_key => 'test' });
-    
+
     throws_ok { $rpx->auth_info({}); } qr{Token is required}, 'token required';
-   
+
     $HTTP::Response::CONTENT = '{ "stat": "ok" }';
     $rpx->auth_info({ token => 'foo' });
     is $LWP::UserAgent::LAST_POST_URL, 'https://rpxnow.com/api/v2/auth_info', 'auth_info correct url';
@@ -48,10 +48,10 @@ Auth_Info: {
 
 Map: {
     my $rpx = Net::API::RPX->new({ api_key => 'test' });
-    
+
     throws_ok { $rpx->map({}) } qr{Identifier is required}, 'Identifier required';
     throws_ok { $rpx->map({ identifier => 'fred' }) } qr{Primary Key is required}, 'Primary Key required';
-   
+
     $HTTP::Response::CONTENT = '{ "stat": "ok" }';
     $rpx->map({ identifier => 'fred', primary_key => 12 });
     is $LWP::UserAgent::LAST_POST_URL, 'https://rpxnow.com/api/v2/map', 'map correct url';
@@ -65,10 +65,10 @@ Map: {
 
 Unmap: {
     my $rpx = Net::API::RPX->new({ api_key => 'test' });
-    
+
     throws_ok { $rpx->unmap({}) } qr{Identifier is required}, 'Identifier required';
     throws_ok { $rpx->unmap({ identifier => 'fred' }) } qr{Primary Key is required}, 'Primary Key required';
-   
+
     $HTTP::Response::CONTENT = '{ "stat": "ok" }';
     $rpx->unmap({ identifier => 'fred', primary_key => 12 });
     is $LWP::UserAgent::LAST_POST_URL, 'https://rpxnow.com/api/v2/unmap', 'unmap correct url';
@@ -82,16 +82,16 @@ Unmap: {
 
 Mappings: {
     my $rpx = Net::API::RPX->new({ api_key => 'test' });
-    
+
     throws_ok { $rpx->mappings({}) } qr{Primary Key is required}, 'Primary Key required';
-   
+
     $HTTP::Response::CONTENT = '{ "stat": "ok" }';
     $rpx->mappings({ primary_key => 4 });
     is $LWP::UserAgent::LAST_POST_URL, 'https://rpxnow.com/api/v2/mappings', 'mappings correct url';
     is_deeply $LWP::UserAgent::LAST_POST_ARGUMENTS, {
         format => 'json',
         apiKey => 'test',
-        primaryKey => 4, 
+        primaryKey => 4,
     }, 'correct arguments';
 }
 
