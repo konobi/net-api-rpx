@@ -6,6 +6,7 @@ use URI;
 use JSON::Any;
 use Net::API::RPX::Exception::Usage;
 use Net::API::RPX::Exception::Network;
+use Net::API::RPX::Exception::Service;
 
 =head1 NAME
 
@@ -234,11 +235,18 @@ sub _fetch {
   }
 
   my $data = JSON::Any->from_json( $res->content );
-  if(delete $data->{'stat'} ne 'ok'){
-    my $err = delete $data->{'err'};
-    die "RPX returned error of type '". $rpx_errors->{ $err->{code} } . "' with message: " . $err->{msg};
+  if($data->{'stat'} ne 'ok'){
+    my $err = $data->{'err'};
+    Net::API::RPX::Exception::Service->throw(
+        data => $data,
+        status => $data->{'stat'},
+        error => $data->{'err'},
+        error_code => $data->{err}->{code},
+        error_message => $data->{err}->{msg},
+        message => "RPX returned error of type '". $rpx_errors->{ $err->{code} } . "' with message: " . $err->{msgt},
+    );
   }
-
+  delete $data->{'stat'};
   return $data;
 }
 

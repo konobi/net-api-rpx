@@ -6,6 +6,12 @@ use warnings;
 use Moose;
 use namespace::autoclean;
 
+=head1 NAME
+
+Net::API::RPX::Exception::Network - A Class of exceptions for network connectivitiy issues.
+
+=cut
+
 extends 'Net::API::RPX::Exception';
 
 has 'ua_result'   => ( isa => "Ref", is => 'ro', required => 1 );
